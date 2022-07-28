@@ -13,7 +13,8 @@ import { SortableHeader, SortEvent } from './sortableHeader';
 })
 
 export class AppComponent {
-
+  searchText: any;
+  
   studentList: Student[];
 
   Id: Number;
