@@ -1,7 +1,7 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { NgbModal, ModalDismissReasons, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from './app-service.component';
 import { SortableHeader, SortEvent } from './sortableHeader';
 
@@ -26,6 +26,15 @@ export class AppComponent {
   Add: string;
   ProfilePic: string;
 
+  // create new
+  _firstName: string;
+  _lastName: string;
+  _mobile: string;
+  _email: string;
+  _nic: string;
+  _dob: string;
+  _add: string;
+  _profilePic: string;
 
   public isCollapsed = true;
 
@@ -63,14 +72,14 @@ export class AppComponent {
 
   async submit() {
     let data = {
-      "firstName": this.FirstName,
-      "lastName": this.LastName,
-      "mobile": this.Mobile,
-      "email": this.Email,
-      "nic": this.Nic,
-      "dob": this.Dob,
-      "add": this.Add,
-      "profilePic": this.ProfilePic
+      "firstName": this._firstName,
+      "lastName": this._lastName,
+      "mobile": this._mobile,
+      "email": this._email,
+      "nic": this._nic,
+      "dob": this._dob,
+      "add": this._add,
+      "profilePic": this._profilePic
     }
     this.appService.submitStudent(data).subscribe((res: any) => {
     })
@@ -80,16 +89,40 @@ export class AppComponent {
   }
 
   update() {
+    let data = {
+      "id": this.Id,
+      "firstName": this.FirstName,
+      "lastName": this.LastName,
+      "mobile": this.Mobile,
+      "email": this.Email,
+      "nic": this.Nic,
+      "dob": this.Dob,
+      "add": this.Add,
+      "profilePic": this.ProfilePic
+    }
+    this.appService.updateStudent(this.Id, data).subscribe((res: any) => {
+    })
   }
 
-  clear() {
-    this.FirstName = "";
-    this.LastName = "";
-    this.Mobile = "";
-    this.Email = "";
-    this.Nic = "";
-    this.Dob = "";
-    this.Add = "";
+  clear(status?: string) {
+    if (status == "popup") {
+      this._firstName = "",
+        this._lastName = "",
+        this._mobile = "",
+        this._email = "",
+        this._nic = "",
+        this._dob = "",
+        this._add = "",
+        this._profilePic = ""
+    } else {
+      this.FirstName = "";
+      this.LastName = "";
+      this.Mobile = "";
+      this.Email = "";
+      this.Nic = "";
+      this.Dob = "";
+      this.Add = "";
+    }
   }
 
   delete(id: any) {
@@ -103,7 +136,6 @@ export class AppComponent {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
-
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
@@ -122,7 +154,6 @@ export class AppComponent {
 
   onSort({ column, direction }: SortEvent) {
   }
-
 
 }
 
