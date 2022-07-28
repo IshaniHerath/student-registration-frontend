@@ -2,11 +2,11 @@
   <form>
     <div class="row">
       <div class="col">
-        <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label" >Search Here:</label>
+        <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Search Here:</label>
       </div>
       <div class="col">
-        <input id="table-filtering-search" class="form-control" type="text" 
-        class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="on">
+        <input id="table-filtering-search" class="form-control" type="text" class="form-control" type="text"
+          name="search" [(ngModel)]="searchText" autocomplete="on">
       </div>
       <div class="col cust-button">
         <button type="button" class="btn btn-primary .me-1" (click)="open(mymodal)">CREATE NEW</button>
@@ -19,7 +19,7 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col" sortable="fName" (sort)="onSort($event)">First Name</th>
+        <th scope="col">First Name</th>
         <th scope="col">Last Name</th>
         <th scope="col">Mobile</th>
         <th scope="col">Email</th>
@@ -27,7 +27,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let student of studentList | filter:searchText" class="table-row" (click)="collapse.toggle(); getStudent(student.id)">
+      <tr *ngFor="let student of studentList 
+      | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize | filter:searchText " class="table-row"
+        (click)="collapse.toggle(); getStudent(student.id)">
         <td>{{student.firstName}}</td>
         <td>{{student.lastName}}</td>
         <td>{{student.mobile}}</td>
@@ -37,18 +39,8 @@
     </tbody>
   </table>
 
-
-  <!-- TODO PAGINATION -->
-  <!-- <div class="d-flex justify-content-between p-2">
-  <ngb-pagination (pageChange)="refreshCountries()">
-  </ngb-pagination>
-
-  <select class="form-select" style="width: auto" (ngModelChange)="refreshCountries()">
-    <option >2 items per page</option>
-    <option >4 items per page</option>
-    <option >6 items per page</option>
-  </select>
-</div> -->
+  <ngb-pagination [pageSize]="pageSize" [collectionSize]="studentList.length" [(page)]="page"
+    aria-label="Default pagination"></ngb-pagination>
 </div>
 
 <!-- Create New -->
@@ -62,8 +54,15 @@
 
   <div class="modal-body">
     <div>
-      <img src="" alt="..." class="img-thumbnail">
+      <div class="col-sm-5 imgUp">
+        <div class="imagePreview"></div>
+        <label class="btn btn-primary btn-primary-cust" (click)="imgUpload($event)">
+          Upload<input type="file" class="uploadFile img" value="Upload Photo"
+            style="width: 0px;height: 0px;overflow: hidden;">
+        </label>
+      </div>
     </div>
+
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">First Name*:</label>
     <input id="fName" class="form-control" type="text" [(ngModel)]="_firstName">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Last Name*:</label>
@@ -75,7 +74,10 @@
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">NIC*:</label>
     <input id="nic" class="form-control" type="text" [(ngModel)]="_nic">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">DOB:</label>
-    <input id="dob" class="form-control" type="text" [(ngModel)]="_dob">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="_dob" ngbDatepicker #d="ngbDatepicker">
+      <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+    </div>
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Address:</label>
     <input id="add" class="form-control" type="text" [(ngModel)]="_add">
   </div>
@@ -100,7 +102,7 @@
                 <div class="col label-cust-input">
                   <label for="table-filtering-search" class="">First Name:</label>
                 </div>
-                <div class="col   ">
+                <div class="col">
                   <input id="fName" class="form-control" type="text" [(ngModel)]="FirstName">
                 </div>
                 <div class="col label-cust-input">
@@ -137,7 +139,11 @@
                   <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">DOB:</label>
                 </div>
                 <div class="col">
-                  <input id="dob" class="form-control" type="text" [(ngModel)]="Dob">
+                  <!-- <input id="dob" class="form-control" type="text" [(ngModel)]="Dob"> -->
+                  <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="Dob" ngbDatepicker #d="ngbDatepicker">
+                    <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+                  </div>
                 </div>
               </div>
 
@@ -160,3 +166,6 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
