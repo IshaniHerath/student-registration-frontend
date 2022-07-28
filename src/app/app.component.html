@@ -55,27 +55,37 @@
   <div class="modal-body">
     <div>
       <div class="col-sm-5 imgUp">
-        <div class="imagePreview"></div>
-        <label class="btn btn-primary btn-primary-cust" (click)="imgUpload($event)">
-          Upload<input type="file" class="uploadFile img" value="Upload Photo"
+        <div class="imagePreview" style="background: url('../assets/img/{{_profilePic}}')"></div>
+        <label class="btn btn-primary btn-primary-cust">
+          Upload
+          <input type="file" class="uploadFile img" value="Upload Photo" (change)="selectImg($event)"
             style="width: 0px;height: 0px;overflow: hidden;">
         </label>
       </div>
     </div>
 
-    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">First Name*:</label>
-    <input id="fName" class="form-control" type="text" [(ngModel)]="_firstName">
+    <div>
+      <label for="fName" class="col-xs-3 col-sm-auto col-form-label">First Name*:</label>
+      <input id="fName" class="form-control" type="text" [(ngModel)]="_firstName" required>
+    </div>
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Last Name*:</label>
     <input id="lName" class="form-control" type="text" [(ngModel)]="_lastName">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Mobile*:</label>
     <input id="mobile" class="form-control" type="text" [(ngModel)]="_mobile">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Email*:</label>
-    <input id="email" class="form-control" type="text" [(ngModel)]="_email">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="something@gmail" [(ngModel)]="_email"
+        aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <span class="input-group-text" id="basic-addon2">.com</span>
+      </div>
+    </div>
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">NIC*:</label>
     <input id="nic" class="form-control" type="text" [(ngModel)]="_nic">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">DOB:</label>
     <div class="input-group">
-      <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="_dob" ngbDatepicker #d="ngbDatepicker">
+      <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="_dob" ngbDatepicker
+        #d="ngbDatepicker">
       <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
     </div>
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Address:</label>
@@ -95,7 +105,7 @@
         <div class="row">
           <div class="row full-area">
             <div class="col-3 img-area">
-              <img src="./../assets/img/dp.jpg" alt="..." class="img-thumbnail">
+              <img src="./../assets/img/{{ProfilePic}}" alt="..." class="img-thumbnail">
             </div>
             <div class="col">
               <div class="row cust-row">
@@ -139,9 +149,9 @@
                   <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">DOB:</label>
                 </div>
                 <div class="col">
-                  <!-- <input id="dob" class="form-control" type="text" [(ngModel)]="Dob"> -->
                   <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="Dob" ngbDatepicker #d="ngbDatepicker">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="Dob" ngbDatepicker
+                      #d="ngbDatepicker">
                     <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
                   </div>
                 </div>

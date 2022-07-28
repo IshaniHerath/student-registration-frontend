@@ -6,7 +6,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 // import { NgbdSortableHeader } from './sortableHeader';
 
-const rotate: {[key: string]: SortDirection} = { 'asc': 'desc', 'desc': '', '': 'asc' };
+const rotate: { [key: string]: SortDirection } = { 'asc': 'desc', 'desc': '', '': 'asc' };
 export type SortColumn = keyof Student | '';
 export type SortDirection = 'asc' | 'desc' | '';
 const compare = (v1: string | number, v2: string | number) => v1.toString().toLowerCase() < v2.toString().toLowerCase() ? -1 : v1.toString().toLowerCase() > v2.toString().toLowerCase() ? 1 : 0;
@@ -33,7 +33,7 @@ export class NgbdSortableHeader {
 
   rotate() {
     this.direction = rotate[this.direction];
-    this.sort.emit({column: this.sortable, direction: this.direction});
+    this.sort.emit({ column: this.sortable, direction: this.direction });
   }
 }
 @Component({
@@ -43,8 +43,8 @@ export class NgbdSortableHeader {
 })
 
 export class AppComponent {
-  
-@ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+
+  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
 
   pageSize = 5;
   page = 1;
@@ -52,7 +52,6 @@ export class AppComponent {
   searchText: any;
 
   studentList: Student[];
-  // studentList: [];
 
   Id: Number;
   FirstName: string;
@@ -96,17 +95,20 @@ export class AppComponent {
 
   getStudent(id: any) {
     this.appService.getStudent(id).subscribe((res: any) => {
-      // console.log("aaaaaaaaaaaaaaaaaa", res)
-      let formattedDate = moment(res.dob).format("YYYY-MM-DD");
-      // console.log("formattedDate >> llllllllllllll", formattedDate);
+      let date = {
+        "year": moment(res.dob).year(),
+        "month": moment(res.dob).month(),
+        "day": moment(res.dob).day()
+      }
       this.Id = res.id;
       this.FirstName = res.firstName;
       this.LastName = res.lastName;
       this.Mobile = res.mobile;
       this.Email = res.email;
       this.Nic = res.nic;
-      this.Dob = formattedDate;
+      this.Dob = date;
       this.Add = res.address;
+      this.ProfilePic = res.profilePic;
     })
   }
 
@@ -191,12 +193,12 @@ export class AppComponent {
     }
   }
 
-  imgUpload(event: any) {
-    console.log("aaaaaaaaaaa")
+  selectImg(event: any) {
+    let imageName = event.target.value.split("\\");
+    this._profilePic = imageName.pop();
   }
 
-
-  onSort({column, direction}: SortEvent) {
+  onSort({ column, direction }: SortEvent) {
     // resetting other headers
     this.headers.forEach(header => {
       if (header.sortable !== column) {
@@ -213,13 +215,8 @@ export class AppComponent {
         return direction === 'asc' ? res : -res;
       });
     }
-
-    console.log(this.studentList.map((student) => student.firstName) );
   }
-
 }
-
-
 
 export interface Student {
   id: number;
