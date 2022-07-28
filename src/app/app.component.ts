@@ -1,18 +1,51 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, Directive, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from './app-service.component';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
+// import { NgbdSortableHeader } from './sortableHeader';
 
+const rotate: {[key: string]: SortDirection} = { 'asc': 'desc', 'desc': '', '': 'asc' };
+export type SortColumn = keyof Student | '';
+export type SortDirection = 'asc' | 'desc' | '';
+const compare = (v1: string | number, v2: string | number) => v1.toString().toLowerCase() < v2.toString().toLowerCase() ? -1 : v1.toString().toLowerCase() > v2.toString().toLowerCase() ? 1 : 0;
+
+export interface SortEvent {
+  column: SortColumn;
+  direction: SortDirection;
+}
+
+@Directive({
+  selector: 'th[sortable]',
+  host: {
+    '[class.asc]': 'direction === "asc"',
+    '[class.desc]': 'direction === "desc"',
+    '(click)': 'rotate()'
+  }
+})
+
+
+export class NgbdSortableHeader {
+  @Input() sortable: SortColumn = '';
+  @Input() direction: SortDirection = '';
+  @Output() sort = new EventEmitter<SortEvent>();
+
+  rotate() {
+    this.direction = rotate[this.direction];
+    this.sort.emit({column: this.sortable, direction: this.direction});
+  }
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 
-
 export class AppComponent {
+  
+@ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
+
   pageSize = 5;
   page = 1;
 
@@ -159,9 +192,34 @@ export class AppComponent {
   }
 
   imgUpload(event: any) {
+    console.log("aaaaaaaaaaa")
+  }
+
+
+  onSort({column, direction}: SortEvent) {
+    // resetting other headers
+    this.headers.forEach(header => {
+      if (header.sortable !== column) {
+        header.direction = '';
+      }
+    });
+
+    // sorting countries
+    if (direction === '' || column === '') {
+      this.studentList = this.studentList;
+    } else {
+      this.studentList = [...this.studentList].sort((a, b) => {
+        const res = compare(a[column], b[column]);
+        return direction === 'asc' ? res : -res;
+      });
+    }
+
+    console.log(this.studentList.map((student) => student.firstName) );
   }
 
 }
+
+
 
 export interface Student {
   id: number;
@@ -174,3 +232,4 @@ export interface Student {
   dob: string;
   profilePic: string;
 }
+

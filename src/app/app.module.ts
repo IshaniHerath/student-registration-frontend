@@ -7,11 +7,12 @@ import { AppService } from './app-service.component'
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { NgbdSortableHeader } from './app.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    
+    NgbdSortableHeader
   ],
   imports: [
     BrowserModule,

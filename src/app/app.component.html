@@ -19,11 +19,11 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
-        <th scope="col">Mobile</th>
-        <th scope="col">Email</th>
-        <th scope="col">NIC</th>
+        <th scope="col" sortable="firstName" (sort)="onSort($event)">First Name</th>
+        <th scope="col" sortable="lastName" (sort)="onSort($event)">Last Name</th>
+        <th scope="col" sortable="mobile" (sort)="onSort($event)">Mobile</th>
+        <th scope="col" sortable="email" (sort)="onSort($event)">Email</th>
+        <th scope="col" sortable="nic" (sort)="onSort($event)">NIC</th>
       </tr>
     </thead>
     <tbody>
