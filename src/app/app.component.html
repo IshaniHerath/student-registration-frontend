@@ -54,7 +54,7 @@
 <!-- Create New -->
 <ng-template #mymodal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">User Full Name Here</h4>
+    <h4 class="modal-title" id="modal-basic-title">CREATE NEW STUDENT</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -62,28 +62,26 @@
 
   <div class="modal-body">
     <div>
-      <img src="./../assets/img/dp.jpg" alt="..." class="img-thumbnail">
+      <img src="" alt="..." class="img-thumbnail">
     </div>
-
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">First Name*:</label>
-    <input id="fName" class="form-control" type="text" [(ngModel)]="FirstName">
+    <input id="fName" class="form-control" type="text" [(ngModel)]="_firstName">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Last Name*:</label>
-    <input id="lName" class="form-control" type="text" [(ngModel)]="LastName">
+    <input id="lName" class="form-control" type="text" [(ngModel)]="_lastName">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Mobile*:</label>
-    <input id="mobile" class="form-control" type="text" [(ngModel)]="Mobile">
+    <input id="mobile" class="form-control" type="text" [(ngModel)]="_mobile">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Email*:</label>
-    <input id="email" class="form-control" type="text" [(ngModel)]="Email">
+    <input id="email" class="form-control" type="text" [(ngModel)]="_email">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">NIC*:</label>
-    <input id="nic" class="form-control" type="text" [(ngModel)]="Nic">
+    <input id="nic" class="form-control" type="text" [(ngModel)]="_nic">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">DOB:</label>
-    <input id="dob" class="form-control" type="text" [(ngModel)]="Dob">
+    <input id="dob" class="form-control" type="text" [(ngModel)]="_dob">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Address:</label>
-    <input id="add" class="form-control" type="text" [(ngModel)]="Add">
+    <input id="add" class="form-control" type="text" [(ngModel)]="_add">
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success" (click)="submit() ; modal.dismiss('Cross click')">SUBMIT</button>
-    <button type="button" class="btn btn-primary" (click)="clear()">CLEAR</button>
-    <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button> -->
+    <button type="button" class="btn btn-primary" (click)="clear('popup')">CLEAR</button>
   </div>
 </ng-template>
 
@@ -156,7 +154,6 @@
                 <button type="button" class="btn btn-success cust-button-set" (click)="update()">UPDATE</button>
                 <button type="button" class="btn btn-primary cust-button-set" (click)="clear()">CLEAR</button>
                 <button type="button" class="btn btn-danger cust-button-set" (click)="delete(this.Id)">DELETE</button>
-                <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button> -->
               </div>
 
             </div>
