@@ -2,13 +2,13 @@
   <form>
     <div class="row">
       <div class="col">
-        <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Full text search:</label>
+        <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Search Here:</label>
       </div>
       <div class="col">
-        <input id="table-filtering-search" class="form-control" type="text">
+        <input id="table-filtering-search" class="form-control" type="text" class="form-control" type="text"
+          name="search" [(ngModel)]="searchText" autocomplete="on">
       </div>
       <div class="col cust-button">
-        <button type="button" class="btn btn-secondary cust-btn-margin" (click)="search()">SEARCH</button>
         <button type="button" class="btn btn-primary .me-1" (click)="open(mymodal)">CREATE NEW</button>
       </div>
     </div>
@@ -19,15 +19,17 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col" sortable="fName" (sort)="onSort($event)">First Name</th>
-        <th scope="col">Last Name</th>
-        <th scope="col">Mobile</th>
-        <th scope="col">Email</th>
-        <th scope="col">NIC</th>
+        <th scope="col" sortable="firstName" (sort)="onSort($event)">First Name</th>
+        <th scope="col" sortable="lastName" (sort)="onSort($event)">Last Name</th>
+        <th scope="col" sortable="mobile" (sort)="onSort($event)">Mobile</th>
+        <th scope="col" sortable="email" (sort)="onSort($event)">Email</th>
+        <th scope="col" sortable="nic" (sort)="onSort($event)">NIC</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let student of studentList" class="table-row" (click)="collapse.toggle(); getStudent(student.id)">
+      <tr *ngFor="let student of studentList 
+      | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize | filter:searchText " class="table-row"
+        (click)="collapse.toggle(); getStudent(student.id)">
         <td>{{student.firstName}}</td>
         <td>{{student.lastName}}</td>
         <td>{{student.mobile}}</td>
@@ -37,18 +39,8 @@
     </tbody>
   </table>
 
-
-  <!-- TODO PAGINATION -->
-  <!-- <div class="d-flex justify-content-between p-2">
-  <ngb-pagination (pageChange)="refreshCountries()">
-  </ngb-pagination>
-
-  <select class="form-select" style="width: auto" (ngModelChange)="refreshCountries()">
-    <option >2 items per page</option>
-    <option >4 items per page</option>
-    <option >6 items per page</option>
-  </select>
-</div> -->
+  <ngb-pagination [pageSize]="pageSize" [collectionSize]="studentList.length" [(page)]="page"
+    aria-label="Default pagination"></ngb-pagination>
 </div>
 
 <!-- Create New -->
@@ -62,20 +54,40 @@
 
   <div class="modal-body">
     <div>
-      <img src="" alt="..." class="img-thumbnail">
+      <div class="col-sm-5 imgUp">
+        <div class="imagePreview" style="background: url('../assets/img/{{_profilePic}}')"></div>
+        <label class="btn btn-primary btn-primary-cust">
+          Upload
+          <input type="file" class="uploadFile img" value="Upload Photo" (change)="selectImg($event)"
+            style="width: 0px;height: 0px;overflow: hidden;">
+        </label>
+      </div>
     </div>
-    <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">First Name*:</label>
-    <input id="fName" class="form-control" type="text" [(ngModel)]="_firstName">
+
+    <div>
+      <label for="fName" class="col-xs-3 col-sm-auto col-form-label">First Name*:</label>
+      <input id="fName" class="form-control" type="text" [(ngModel)]="_firstName" required>
+    </div>
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Last Name*:</label>
     <input id="lName" class="form-control" type="text" [(ngModel)]="_lastName">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Mobile*:</label>
     <input id="mobile" class="form-control" type="text" [(ngModel)]="_mobile">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Email*:</label>
-    <input id="email" class="form-control" type="text" [(ngModel)]="_email">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="something@gmail" [(ngModel)]="_email"
+        aria-label="Recipient's username" aria-describedby="basic-addon2">
+      <div class="input-group-append">
+        <span class="input-group-text" id="basic-addon2">.com</span>
+      </div>
+    </div>
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">NIC*:</label>
     <input id="nic" class="form-control" type="text" [(ngModel)]="_nic">
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">DOB:</label>
-    <input id="dob" class="form-control" type="text" [(ngModel)]="_dob">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="_dob" ngbDatepicker
+        #d="ngbDatepicker">
+      <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+    </div>
     <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">Address:</label>
     <input id="add" class="form-control" type="text" [(ngModel)]="_add">
   </div>
@@ -93,14 +105,14 @@
         <div class="row">
           <div class="row full-area">
             <div class="col-3 img-area">
-              <img src="./../assets/img/dp.jpg" alt="..." class="img-thumbnail">
+              <img src="./../assets/img/{{ProfilePic}}" alt="..." class="img-thumbnail">
             </div>
             <div class="col">
               <div class="row cust-row">
                 <div class="col label-cust-input">
                   <label for="table-filtering-search" class="">First Name:</label>
                 </div>
-                <div class="col   ">
+                <div class="col">
                   <input id="fName" class="form-control" type="text" [(ngModel)]="FirstName">
                 </div>
                 <div class="col label-cust-input">
@@ -137,7 +149,11 @@
                   <label for="table-filtering-search" class="col-xs-3 col-sm-auto col-form-label">DOB:</label>
                 </div>
                 <div class="col">
-                  <input id="dob" class="form-control" type="text" [(ngModel)]="Dob">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="Dob" ngbDatepicker
+                      #d="ngbDatepicker">
+                    <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+                  </div>
                 </div>
               </div>
 
@@ -155,8 +171,10 @@
                 <button type="button" class="btn btn-primary cust-button-set" (click)="clear()">CLEAR</button>
                 <button type="button" class="btn btn-danger cust-button-set" (click)="delete(this.Id)">DELETE</button>
               </div>
-
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
