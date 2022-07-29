@@ -4,7 +4,6 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AppService } from './app-service.component';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
-// import { NgbdSortableHeader } from './sortableHeader';
 
 const rotate: { [key: string]: SortDirection } = { 'asc': 'desc', 'desc': '', '': 'asc' };
 export type SortColumn = keyof Student | '';
@@ -96,10 +95,11 @@ export class AppComponent {
   getStudent(id: any) {
     this.appService.getStudent(id).subscribe((res: any) => {
       let date = {
-        "year": moment(res.dob).year(),
+        "day": moment(res.dob).day(),
         "month": moment(res.dob).month(),
-        "day": moment(res.dob).day()
+        "year": moment(res.dob).year()
       }
+
       this.Id = res.id;
       this.FirstName = res.firstName;
       this.LastName = res.lastName;
@@ -113,6 +113,7 @@ export class AppComponent {
   }
 
   async submit() {
+    this._email = this._email+".com"
     let formattedDate = moment(this._dob.year + "-" + this._dob.month + "-" + this._dob.day).format();
     let data = {
       "firstName": this._firstName,
@@ -130,7 +131,7 @@ export class AppComponent {
   }
 
   update() {
-    let formattedDate = moment(this.Dob.year + "-" + this.Dob.month + "-" + this.Dob.day).format();
+    let formattedDate = moment(this.Dob).format();
     let data = {
       "id": this.Id,
       "firstName": this.FirstName,
